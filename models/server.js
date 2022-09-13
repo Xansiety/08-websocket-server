@@ -48,22 +48,15 @@ class Servidor {
   socketsConfig(){
 
     this.io.on("connection", (socket) => {
-      console.log('Cliente conectado', socket.id);
-
+      // console.log('Cliente conectado', socket.id); 
       socket.on("disconnect", () =>{
         console.log('Cliente desconectado', socket.id);
-      })
-
-      // // send a message to the client
-      // socket.emit("hello from server", 1, "2", { 3: Buffer.from([4]) });
-    
-      // // receive a message from the client
-      socket.on("mensaje-cliente", (payload) => {
-        // ...
-        console.log(payload);
-      });
-
-
+      }) 
+      // receive a message from the client
+      socket.on("mensaje-cliente", (payload) => { 
+        // enviar mensaje a los clientes
+          this.io.emit("mensaje-servidor", payload) 
+      }); 
     });
 
   }

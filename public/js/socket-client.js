@@ -7,16 +7,20 @@ const lblOnline  = document.querySelector('#lblOnline')
 const txtMensaje = document.querySelector('#txtMensaje')
 
 socket.on("connect", () => {
-    console.log('Conectado');
+    // console.log('Conectado');
     lblOffline.style.display = 'none'
     lblOnline.style.display = ''
 });
 
 socket.on('disconnect', () => {
-    console.log('Desconectado');
+    // console.log('Desconectado');
     lblOnline.style.display = 'none'
     lblOffline.style.display = ''
 });
+
+socket.on('mensaje-servidor', (payload)=> {
+    console.log('mensaje-servidor',payload);
+})
 
 
 btnEnviar.addEventListener('click', () => {
@@ -27,6 +31,6 @@ btnEnviar.addEventListener('click', () => {
         id: 'sdnnlka',
         fecha: new Date().getTime()
     }
-    
+
     socket.emit("mensaje-cliente", payload)
 }) 
