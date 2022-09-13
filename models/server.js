@@ -1,71 +1,56 @@
-import express from "express"
-import cors from "cors"  
-import { createServer } from 'http';
-import { Server } from 'socket.io';
- 
+import express from "express";
+import cors from "cors";
+import { createServer } from "http";
+import { Server } from "socket.io";
+import { socketController } from "../sockets/controller.js";
+
 class Servidor {
   constructor() {
-    this.app = express() //creamos la aplicación de express
-    this.port = process.env.PORT || 3000
+    this.app = express(); //creamos la aplicación de express
+    this.port = process.env.PORT || 3000;
 
-    this.server = createServer(this.app)
-    this.io = new Server(this.server) // Socket.io: Servidor de sockets
+    this.server = createServer(this.app);
+    this.io = new Server(this.server); // Socket.io: Servidor de sockets
 
-    this.paths = { }
+    this.paths = {};
 
     //Conectar a base de datos
 
     // Middleware
-    this.Middleware()
+    this.Middleware();
 
     //Rutas de mi aplicación
-    this.routes()
+    this.routes();
 
     //Configuración de sockets
-    this.socketsConfig()
+    this.socketsConfig();
   }
-
- 
 
   Middleware() {
     //CORS
-    this.app.use(cors())
+    this.app.use(cors());
 
     // parseo y lectura del body
-    this.app.use(express.json())
+    this.app.use(express.json());
 
     // Directorio publico
-    this.app.use(express.static("public"))
-    
+    this.app.use(express.static("public"));
   }
 
   routes() {
     //rutas separadas
-    // this.app.use(this.paths.archivos, archivosRouter) 
+    // this.app.use(this.paths.archivos, archivosRouter)
   }
 
-
-  socketsConfig(){
-
-    this.io.on("connection", (socket) => {
-      // console.log('Cliente conectado', socket.id); 
-      socket.on("disconnect", () =>{
-        console.log('Cliente desconectado', socket.id);
-      }) 
-      // receive a message from the client
-      socket.on("mensaje-cliente", (payload) => { 
-        // enviar mensaje a los clientes
-          this.io.emit("mensaje-servidor", payload) 
-      }); 
-    });
-
+  socketsConfig() {
+    this.io.on("connection", socketController)
   }
 
   listen() {
     this.server.listen(this.port, () => {
-      console.log(`Example app listening on port ${this.port}`)
-    })
+      console.log(`Example app listening on port ${this.port}`);
+    });
   }
 }
 
-export default Servidor
+export default Servidor;
