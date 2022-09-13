@@ -20,6 +20,9 @@ class Servidor {
 
     //Rutas de mi aplicación
     this.routes()
+
+    //Configuración de sockets
+    this.socketsConfig()
   }
 
  
@@ -39,6 +42,27 @@ class Servidor {
   routes() {
     //rutas separadas
     // this.app.use(this.paths.archivos, archivosRouter) 
+  }
+
+
+  socketsConfig(){
+
+    this.io.on("connection", (socket) => {
+      console.log('Cliente conectado', socket.id);
+
+      socket.on("disconnect", () =>{
+        console.log('Cliente desconectado', socket.id);
+      })
+
+      // // send a message to the client
+      // socket.emit("hello from server", 1, "2", { 3: Buffer.from([4]) });
+    
+      // // receive a message from the client
+      // socket.on("hello from client", (...args) => {
+      //   // ...
+      // });
+    });
+
   }
 
   listen() {
