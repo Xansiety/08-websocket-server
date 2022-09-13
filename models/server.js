@@ -58,9 +58,12 @@ class Servidor {
       // socket.emit("hello from server", 1, "2", { 3: Buffer.from([4]) });
     
       // // receive a message from the client
-      // socket.on("hello from client", (...args) => {
-      //   // ...
-      // });
+      socket.on("mensaje-cliente", (payload) => {
+        // ...
+        console.log(payload);
+      });
+
+
     });
 
   }
